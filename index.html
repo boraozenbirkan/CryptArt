@@ -105,23 +105,54 @@
             const gridContainer = document.getElementById('grid-container');
             const colorPicker = document.getElementById('color-picker');
 
+            function rgbToHex(rgbColor) {
+              // Convert the RGB color value to HEX format
+              const hex = rgbColor.match(/\d+/g)
+                        .map(component => parseInt(component).toString(16).padStart(2, '0'))
+                        .join('');
+              return '#' + hex;
+            }
+
+            // Returns true if the string is a valid hex color code
+            function isValidHexColor(color) {
+              const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;    
+              return hexRegex.test(color);
+            }
+
+            function testString(){
+              const color1 = "ff0000"; // Valid HEX color code
+              const color2 = "Anan"; // Valid HEX color code
+              const color3 = "#0000ff"; // Valid HEX color code
+              const color4 = "#123";    // Valid HEX color code (short form)
+              const color5 = "#hello";  // Invalid HEX color code
+
+              console.log(isValidHexColor(color1)); // false
+              console.log(isValidHexColor(color2)); // false
+              console.log(isValidHexColor(color3)); // true
+              console.log(isValidHexColor(color4)); // true
+              console.log(isValidHexColor(color5)); // false
+            }
+
             function createGrid(rows, cols) {
               gridContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 
               for (let i = 0; i < rows * cols; i++) {
                 const cell = document.createElement('div');
                 cell.classList.add('grid-cell');
-                cell.style.backgroundColor = 'rgb(255, 255, 255)';
+                cell.style.backgroundColor = "#FFFFFF";
                 cell.addEventListener('click', () => updateCellColor(cell));
                 gridContainer.appendChild(cell);
               }
             }
 
             function updateCellColor(cell) {
-              console.log("Current color: " + cell.style.backgroundColor);
+              const hexColor = rgbToHex(cell.style.backgroundColor);
+              console.log("Current color: " + hexColor);
               const color = colorPicker.value;
               cell.style.backgroundColor = color;
-              console.log("New color: " + cell.style.backgroundColor);
+              console.log("New color: " + color);
+
+              // testString();
             }
 
             colorPicker.addEventListener('input', () => {});
